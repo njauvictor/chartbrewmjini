@@ -94,7 +94,9 @@ db.migrate()
       // continue
     }
 
-    const server = app.listen(port, app.settings.api, async () => {
+    // Bind to 0.0.0.0 for Render compatibility (or use undefined to bind to all interfaces)
+    const host = app.settings.api || "0.0.0.0";
+    const server = app.listen(port, host, async () => {
       // Initialize Socket.IO
       await socketManager.initialize(server);
 

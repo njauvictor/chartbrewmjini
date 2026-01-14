@@ -39,8 +39,10 @@ const setUpQueues = (app) => {
   updateChartsQueue = new Queue("updateChartsQueue", getQueueOptions());
   updateChartsQueue.on("error", (error) => {
     if (error.code === "ECONNREFUSED") {
-      console.error("Failed to set up the updates queue. Please check if Redis is running: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
-      process.exit(1);
+      console.warn("Failed to set up the updates queue. Redis is not available. Charts will not update automatically. To enable automatic updates, set up Redis: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
+      // Don't exit - make Redis optional
+    } else {
+      console.error("Update charts queue error:", error.message); // eslint-disable-line no-console
     }
   });
 
@@ -50,8 +52,10 @@ const setUpQueues = (app) => {
   updateDashboardsQueue = new Queue("updateDashboardsQueue", getQueueOptions());
   updateDashboardsQueue.on("error", (error) => {
     if (error.code === "ECONNREFUSED") {
-      console.error("Failed to set up the updates queue. Please check if Redis is running: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
-      process.exit(1);
+      console.warn("Failed to set up the dashboards queue. Redis is not available. Dashboards will not update automatically. To enable automatic updates, set up Redis: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
+      // Don't exit - make Redis optional
+    } else {
+      console.error("Update dashboards queue error:", error.message); // eslint-disable-line no-console
     }
   });
 
@@ -61,8 +65,10 @@ const setUpQueues = (app) => {
   updateMongoDBSchemaQueue = new Queue("updateMongoDBSchemaQueue", getQueueOptions());
   updateMongoDBSchemaQueue.on("error", (error) => {
     if (error.code === "ECONNREFUSED") {
-      console.error("Failed to set up the MongoDB schema update queue. Please check if Redis is running: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
-      process.exit(1);
+      console.warn("Failed to set up the MongoDB schema update queue. Redis is not available. MongoDB schema updates will not work automatically. To enable automatic updates, set up Redis: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
+      // Don't exit - make Redis optional
+    } else {
+      console.error("Update MongoDB schema queue error:", error.message); // eslint-disable-line no-console
     }
   });
   // create a worker for the updateMongoDBSchemaQueue
@@ -77,8 +83,10 @@ const setUpQueues = (app) => {
   const dashboardSnapshotQueue = new Queue("sendSnapshotsQueue", getQueueOptions());
   dashboardSnapshotQueue.on("error", (error) => {
     if (error.code === "ECONNREFUSED") {
-      console.error("Failed to set up the dashboard snapshot queue. Please check if Redis is running: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
-      process.exit(1);
+      console.warn("Failed to set up the dashboard snapshot queue. Redis is not available. Dashboard snapshots will not work automatically. To enable automatic snapshots, set up Redis: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
+      // Don't exit - make Redis optional
+    } else {
+      console.error("Dashboard snapshot queue error:", error.message); // eslint-disable-line no-console
     }
   });
   // create a worker for the dashboardSnapshotQueue
@@ -93,8 +101,10 @@ const setUpQueues = (app) => {
   const updateSnapshotsQueue = new Queue("updateSnapshotsQueue", getQueueOptions());
   updateSnapshotsQueue.on("error", (error) => {
     if (error.code === "ECONNREFUSED") {
-      console.error("Failed to set up the update snapshots queue. Please check if Redis is running: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
-      process.exit(1);
+      console.warn("Failed to set up the update snapshots queue. Redis is not available. Snapshot updates will not work automatically. To enable automatic snapshots, set up Redis: https://docs.chartbrew.com/quickstart#set-up-redis-for-automatic-dataset-updates"); // eslint-disable-line no-console
+      // Don't exit - make Redis optional
+    } else {
+      console.error("Update snapshots queue error:", error.message); // eslint-disable-line no-console
     }
   });
   // create a worker for the updateSnapshotsQueue

@@ -12,6 +12,17 @@ function generateAESKey() {
 // Read the .env file, update the CB_ENCRYPTION_KEY variable, or add it if it doesn't exist
 async function updateKeys(envVar) {
   try {
+    // Skip .env file operations in cloud environments where .env files don't exist
+    // Environment variables should be set via the platform's environment variable configuration
+    if (process.env.RENDER || process.env.VERCEL || process.env.HEROKU || process.env.NODE_ENV === "production") {
+      // Check if the key is already set via environment variables
+      const keyValue = process.env[envVar];
+      if (!keyValue) {
+        console.warn(`${envVar} is not set. Please set it via your platform's environment variable configuration.`); // eslint-disable-line
+      }
+      return;
+    }
+
     const data = await fs.readFile(envPath, "utf8");
 
     let updatedData = data;
@@ -37,7 +48,10 @@ async function updateKeys(envVar) {
     // Write the updates back to the .env file
     await fs.writeFile(envPath, updatedData, "utf8");
   } catch (e) {
-    console.error("The encryption key could not be set up. Please ensure you have CB_ENCRYPTION_KEY_DEV and CB_ENCRYPTION_KEY in your .env file."); // eslint-disable-line
+    // Only show error if we're not in a cloud environment
+    if (!process.env.RENDER && !process.env.VERCEL && !process.env.HEROKU) {
+      console.error("The encryption key could not be set up. Please ensure you have CB_ENCRYPTION_KEY_DEV and CB_ENCRYPTION_KEY in your .env file."); // eslint-disable-line
+    }
   }
 }
 

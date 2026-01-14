@@ -43,13 +43,17 @@ function checkEncryptionKeys() {
 
   // Validate production key
   if (!isValidAES256Key(productionKey) && process.env.NODE_ENV === "production") {
-    console.error("Invalid AES-256 encryption key in CB_ENCRYPTION_KEY. It must be a 64-character hexadecimal string."); // eslint-disable-line
+    console.error("ERROR: CB_ENCRYPTION_KEY is required and must be a 64-character hexadecimal string."); // eslint-disable-line
+    console.error("Please set CB_ENCRYPTION_KEY in your environment variables (e.g., in Render dashboard)."); // eslint-disable-line
+    console.error("You can generate a key by running: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""); // eslint-disable-line
     process.exit(1); // Exit with an error code
   }
 
   // Validate development key
   if (!isValidAES256Key(developmentKey) && process.env.NODE_ENV !== "production") {
-    console.error("Invalid AES-256 encryption key in CB_ENCRYPTION_KEY_DEV. It must be a 64-character hexadecimal string."); // eslint-disable-line
+    console.error("ERROR: CB_ENCRYPTION_KEY_DEV is required and must be a 64-character hexadecimal string."); // eslint-disable-line
+    console.error("Please set CB_ENCRYPTION_KEY_DEV in your environment variables."); // eslint-disable-line
+    console.error("You can generate a key by running: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""); // eslint-disable-line
     process.exit(1); // Exit with an error code
   }
 }
