@@ -190,7 +190,6 @@ function LoginForm() {
             <Spacer y={4} />
             <Row justify="center" align="center">
               <Button
-                onPress={loginUser}
                 endContent={<LuChevronRight />}
                 size="lg"
                 color="primary"
@@ -238,7 +237,6 @@ function LoginForm() {
           <Spacer />
           <div>
             <Button
-              onPress={_onValidateToken}
               endContent={<LuChevronRight />}
               size="lg"
               color="primary"
